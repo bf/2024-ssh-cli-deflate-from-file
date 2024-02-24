@@ -42,16 +42,18 @@ sshbuf_dump_data(const void *s, size_t len, FILE *f)
 	size_t i, j;
 	const u_char *p = (const u_char *)s;
 
-	for (i = 0; i < len; i += 16) {
+	int columns = 16 * 3;
+
+	for (i = 0; i < len; i += columns) {
 		fprintf(f, "%.4zu: ", i);
-		for (j = i; j < i + 16; j++) {
+		for (j = i; j < i + columns; j++) {
 			if (j < len)
 				fprintf(f, "%02x ", p[j]);
 			else
 				fprintf(f, "   ");
 		}
 		fprintf(f, " ");
-		for (j = i; j < i + 16; j++) {
+		for (j = i; j < i + columns; j++) {
 			if (j < len) {
 				if  (isascii(p[j]) && isprint(p[j]))
 					fprintf(f, "%c", p[j]);

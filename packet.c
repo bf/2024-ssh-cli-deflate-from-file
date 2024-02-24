@@ -76,6 +76,9 @@
 # endif
 #endif
 
+#define PACKET_DEBUG 1
+#define ZLIB_DEBUG 1
+
 #ifdef WITH_ZLIB
 #include <zlib.h>
 #endif
@@ -929,7 +932,9 @@ ssh_set_newkeys(struct ssh *ssh, int mode)
 		if ((r = ssh_packet_init_compression(ssh)) < 0)
 			return r;
 		if (mode == MODE_OUT) {
-			if ((r = start_compression_out(ssh, 6)) != 0)
+
+			// if ((r = start_compression_out(ssh, 6)) != 0)
+			if ((r = start_compression_out(ssh, 1)) != 0)
 				return r;
 		} else {
 			if ((r = start_compression_in(ssh)) != 0)
@@ -1037,7 +1042,7 @@ ssh_packet_enable_delayed_compress(struct ssh *ssh)
 			if ((r = ssh_packet_init_compression(ssh)) != 0)
 				return r;
 			if (mode == MODE_OUT) {
-				if ((r = start_compression_out(ssh, 6)) != 0)
+				if ((r = start_compression_out(ssh, 1)) != 0)
 					return r;
 			} else {
 				if ((r = start_compression_in(ssh)) != 0)
