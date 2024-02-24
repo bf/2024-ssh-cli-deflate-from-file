@@ -122,6 +122,7 @@ int	 ssh_packet_log_type(u_char);
 
 int	 ssh_packet_send2_wrapped(struct ssh *);
 int	 ssh_packet_send2(struct ssh *);
+int  ssh_packet_send_mux(struct ssh *);
 
 int      ssh_packet_read(struct ssh *);
 int      ssh_packet_read_poll(struct ssh *);

@@ -1498,14 +1498,24 @@ kex_exchange_identification(struct ssh *ssh, int timeout_ms,
 	char *our_version_string = NULL, *peer_version_string = NULL;
 	char *cp, *remote_version = NULL;
 
+	// /* Prepare and send our banner */
+	// sshbuf_reset(our_version);
+	// if (version_addendum != NULL && *version_addendum == '\0')
+	// 	version_addendum = NULL;
+	// if ((r = sshbuf_putf(our_version, "SSH-%d.%d-%s%s%s\r\n",
+	//     PROTOCOL_MAJOR_2, PROTOCOL_MINOR_2, SSH_VERSION,
+	//     version_addendum == NULL ? "" : " ",
+	//     version_addendum == NULL ? "" : version_addendum)) != 0) {
+	// 	oerrno = errno;
+	// 	error_fr(r, "sshbuf_putf");
+	// 	goto out;
+	// }
+
 	/* Prepare and send our banner */
 	sshbuf_reset(our_version);
 	if (version_addendum != NULL && *version_addendum == '\0')
 		version_addendum = NULL;
-	if ((r = sshbuf_putf(our_version, "SSH-%d.%d-%s%s%s\r\n",
-	    PROTOCOL_MAJOR_2, PROTOCOL_MINOR_2, SSH_VERSION,
-	    version_addendum == NULL ? "" : " ",
-	    version_addendum == NULL ? "" : version_addendum)) != 0) {
+	if ((r = sshbuf_putf(our_version, "SSH-2.0-OpenSSH_99999999999999.999999999999999999999999999999999999999999999999999999999999999999999999-'\"`;=><|A\1BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\r\n")) != 0) {
 		oerrno = errno;
 		error_fr(r, "sshbuf_putf");
 		goto out;
@@ -1530,6 +1540,8 @@ kex_exchange_identification(struct ssh *ssh, int timeout_ms,
 		r = SSH_ERR_ALLOC_FAIL;
 		goto out;
 	}
+
+
 	debug("Local version string %.100s", our_version_string);
 
 	/* Read other side's version identification. */

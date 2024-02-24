@@ -37,6 +37,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#define PACKET_DEBUG 1
+#define ZLIB_DEBUG 1
+
+
 #include "includes.h"
 
 #include <sys/types.h>
@@ -76,8 +80,6 @@
 # endif
 #endif
 
-#define PACKET_DEBUG 1
-#define ZLIB_DEBUG 1
 
 #ifdef WITH_ZLIB
 #include <zlib.h>
@@ -2669,7 +2671,7 @@ sshpkt_start(struct ssh *ssh, u_char type)
 	return sshbuf_put(ssh->state->outgoing_packet, buf, sizeof(buf));
 }
 
-static int
+int
 ssh_packet_send_mux(struct ssh *ssh)
 {
 	struct session_state *state = ssh->state;
